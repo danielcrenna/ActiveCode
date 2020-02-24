@@ -1,0 +1,18 @@
+<Project>
+
+  <PropertyGroup>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Authors>Daniel Crenna &amp; Contributors</Authors>
+    <Description>Simple safe logger and sinks.</Description>
+    <Copyright>Copyright © Daniel Crenna &amp; Contributors. All rights reserved.</Copyright>
+    <PackageIconUrl>https://raw.githubusercontent.com/danielcrenna/ActiveLogging/master/assets/logo.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/danielcrenna/ActiveLogging</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/danielcrenna/ActiveLogging</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dynamic logging</PackageTags>
+    <Version>1.0.0</Version>
+    <PackageReleaseNotes>Initial implementation.</PackageReleaseNotes>
+  </PropertyGroup>
+
+</Project>
