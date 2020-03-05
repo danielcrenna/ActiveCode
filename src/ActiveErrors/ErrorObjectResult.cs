@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ActiveErrors
 {
-	public sealed class ErrorObjectResult : ObjectResult
+	public class ErrorObjectResult : ObjectResult
 	{
 		public ErrorObjectResult(Error error, params object[] args) : base(error)
 		{

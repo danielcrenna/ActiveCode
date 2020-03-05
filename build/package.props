@@ -11,8 +11,8 @@
     <RepositoryUrl>https://github.com/danielcrenna/ActiveErrors</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>dynamic errors exceptions</PackageTags>
-    <Version>1.0.0</Version>
-    <PackageReleaseNotes>Initial implementation.</PackageReleaseNotes>
+    <Version>1.0.1</Version>
+    <PackageReleaseNotes>Added ErrorAndObjectResult type.</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
