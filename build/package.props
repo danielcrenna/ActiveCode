@@ -11,8 +11,8 @@
     <RepositoryUrl>https://github.com/danielcrenna/ActiveCaching</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>dynamic caching</PackageTags>
-    <Version>1.0.0</Version>
-    <PackageReleaseNotes>Initial implementation.</PackageReleaseNotes>
+    <Version>1.0.1</Version>
+    <PackageReleaseNotes>Remove unnecessary cache contention handling.</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>

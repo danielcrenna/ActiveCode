@@ -1,10 +1,12 @@
 // Copyright (c) Daniel Crenna & Contributors. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace ActiveCaching.Configuration
+namespace ActiveCaching
 {
-	public class CacheOptions
+	public interface ICacheManager
 	{
-		public long? MaxSizeBytes { get; set; }
+		int KeyCount { get; }
+		long? SizeLimitBytes { get; set; }
+		long SizeBytes { get; set; }
 	}
 }
