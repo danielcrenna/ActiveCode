@@ -11,7 +11,7 @@
     <RepositoryUrl>https://github.com/danielcrenna/ActiveLogging</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>dynamic logging</PackageTags>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <PackageReleaseNotes>Update dependencies.</PackageReleaseNotes>
   </PropertyGroup>
 
