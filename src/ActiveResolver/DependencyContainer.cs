@@ -16,16 +16,19 @@ namespace ActiveResolver
             _registrations = new ConcurrentDictionary<NameAndType, List<Func<object>>>();
         }
 
-        public DependencyContainer Register(string name, Type type, Func<object> builder)
+        public DependencyContainer Register(string name, Type type, Func<object> builder, Func<Func<object>, Func<object>> memoFunc = null)
         {
             var cacheKey = new NameAndType(name, type);
+
+            var next = memoFunc == null ? builder : memoFunc(builder);
+
             if (!_registrations.TryGetValue(cacheKey, out var list))
             {
                 list = new List<Func<object>>();
                 _registrations.TryAdd(cacheKey, list);
             }
 
-            list.Add(builder);
+            list.Add(next);
             return this;
         }
 
