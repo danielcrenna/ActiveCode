@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Daniel Crenna & Contributors. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Threading;
-
 namespace ActiveResolver.Tests
 {
     public class RegisterTests
@@ -23,6 +21,15 @@ namespace ActiveResolver.Tests
             container.TryResolve("A", typeof(IFoo), out var one);
             container.TryResolve("A", typeof(IFoo), out var two);
             return one == two && one is Bar;
+        }
+
+        public bool Can_register_without_name()
+        {
+            var container = new DependencyContainer();
+            container.Register(typeof(IFoo), () => new Bar());
+            container.TryResolve(typeof(IFoo), out var one);
+            container.TryResolve(typeof(IFoo), out var two);
+            return one != null && two != null && one != two && one is Bar && two is Bar;
         }
 		
         public interface IFoo { }
