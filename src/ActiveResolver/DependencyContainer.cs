@@ -11,8 +11,6 @@ namespace ActiveResolver
 {
     public class DependencyContainer
     {
-        private const string EnumerableSlot = "__ENUMERABLE_SLOT__";
-
         private readonly ConcurrentDictionary<NameAndType, List<Func<object>>> _registrations;
 
         public DependencyContainer()
@@ -20,18 +18,16 @@ namespace ActiveResolver
             _registrations = new ConcurrentDictionary<NameAndType, List<Func<object>>>();
         }
 
-        public DependencyContainer Register(string name, Type type, Func<object> builder, Func<Func<object>, Func<object>> memoFunc = null)
+        public DependencyContainer Register(string name, Type type, Func<object> builder)
         {
             var cacheKey = new NameAndType(name, type);
-			
-            var next = memoFunc == null ? builder : memoFunc(builder);
 
             if (!_registrations.TryGetValue(cacheKey, out var list))
                 _registrations.TryAdd(cacheKey, list = new List<Func<object>>());
 
-            list.Add(next);
+            list.Add(builder);
 			
-            var enumerableCacheKey = new NameAndType($"{EnumerableSlot}{name}", typeof(IEnumerable<>).MakeGenericType(type));
+            var enumerableCacheKey = new NameAndType($"{Constants.EnumerableSlot}{name}", typeof(IEnumerable<>).MakeGenericType(type));
 			
             if (_registrations.TryGetValue(enumerableCacheKey, out var enumerableList))
                 return this;
@@ -56,7 +52,7 @@ namespace ActiveResolver
 
             if (typeof(IEnumerable).IsAssignableFrom(type))
             {
-                var enumerableCacheKey = new NameAndType($"{EnumerableSlot}{name}", typeof(IEnumerable<>).MakeGenericType(type.GetGenericArguments()));
+                var enumerableCacheKey = new NameAndType($"{Constants.EnumerableSlot}{name}", typeof(IEnumerable<>).MakeGenericType(type.GetGenericArguments()));
                 if(_registrations.TryGetValue(enumerableCacheKey, out var enumerableList))
                 {
                     foreach (var entry in enumerableList)
