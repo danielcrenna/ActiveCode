@@ -7,17 +7,8 @@ namespace ActiveResolver
 {
     public static class DependencyContainerExtensions
     {
-        private const string DefaultName = "__DEFAULT__";
-
-        public static DependencyContainer Register(this DependencyContainer container, Type type, Func<object> builder)
-        {
-            container.Register(DefaultName, type, builder);
-            return container;
-        }
-
-        public static bool TryResolve(this DependencyContainer container, Type type, out object instance)
-        {
-            return container.TryResolve(DefaultName, type, out instance);
-        }
+        private const string DefaultName = "__DEFAULT_SLOT__";
+        public static DependencyContainer Register(this DependencyContainer container, Type type, Func<object> builder, Func<Func<object>, Func<object>> memoFunc = null) => container.Register(DefaultName, type, builder, memoFunc);
+        public static bool TryResolve(this DependencyContainer container, Type type, out object instance) => container.TryResolve(DefaultName, type, out instance);
     }
 }
