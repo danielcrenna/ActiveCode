@@ -9,7 +9,7 @@ using TypeKitchen.Creation;
 
 namespace ActiveResolver
 {
-    public class DependencyContainer
+    public class DependencyContainer : IServiceProvider
     {
         private readonly ConcurrentDictionary<NameAndType, List<Func<object>>> _registrations;
 
@@ -121,5 +121,15 @@ namespace ActiveResolver
                 }
             }
         }
+
+		#region IServiceProvider
+
+        public object GetService(Type serviceType)
+        {
+            TryResolve(Constants.DefaultName, serviceType, out var instance);
+            return instance;
+        }
+
+		#endregion
     }
 }
