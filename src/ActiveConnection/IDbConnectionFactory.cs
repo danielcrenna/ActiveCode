@@ -7,7 +7,7 @@ namespace ActiveConnection
 {
 	public interface IDbConnectionFactory
 	{
-		string ConnectionString { get; set; } 
+		string ConnectionString { get; set; }
 		IDbConnection CreateConnection();
 	}
 }

@@ -14,10 +14,7 @@ namespace ActiveConnection
 
 		private volatile IDbConnection _connection;
 
-		public DataContext(IDbConnectionFactory dbConnectionFactory)
-		{
-			_dbConnectionFactory = dbConnectionFactory;
-		}
+		public DataContext(IDbConnectionFactory dbConnectionFactory) => _dbConnectionFactory = dbConnectionFactory;
 
 		public IDbConnection Connection => GetConnection();
 

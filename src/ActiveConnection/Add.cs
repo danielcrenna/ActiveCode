@@ -10,9 +10,13 @@ namespace ActiveConnection
 {
 	public static class Add
 	{
-		private static readonly ConcurrentDictionary<string, DependencyContainer> Containers = new ConcurrentDictionary<string, DependencyContainer>();
-		
-		public static IServiceCollection AddDatabaseConnection<TScope, TConnectionFactory>(this IServiceCollection services, string connectionString, ConnectionScope scope = ConnectionScope.AlwaysNew) where TConnectionFactory : class, IDbConnectionFactory, new()
+		private static readonly ConcurrentDictionary<string, DependencyContainer> Containers =
+			new ConcurrentDictionary<string, DependencyContainer>();
+
+		public static IServiceCollection AddDatabaseConnection<TScope, TConnectionFactory>(
+			this IServiceCollection services, string connectionString,
+			ConnectionScope scope = ConnectionScope.AlwaysNew)
+			where TConnectionFactory : class, IDbConnectionFactory, new()
 		{
 			var slot = $"{typeof(TScope).FullName}";
 
@@ -20,45 +24,55 @@ namespace ActiveConnection
 			services.AddSingleton(factory);
 
 			if (!Containers.TryGetValue(slot, out var container))
-            {
-                var serviceProvider = services.BuildServiceProvider();
-                container = new DependencyContainer(serviceProvider);
-                Containers.TryAdd(slot, container);
+			{
+				var serviceProvider = services.BuildServiceProvider();
+				container = new DependencyContainer(serviceProvider);
+				Containers.TryAdd(slot, container);
 
-                if(!Containers.TryGetValue(slot, out container))
-                    throw new ArgumentException($"Could not initialize container with slot {slot}", slot);
-            }
-			
-            container.Register(slot, factory);
+				if (!Containers.TryGetValue(slot, out container))
+					throw new ArgumentException($"Could not initialize container with slot {slot}", slot);
+			}
+
+			container.Register(slot, factory);
 
 			switch (scope)
 			{
 				case ConnectionScope.AlwaysNew:
 					container.Register(slot, r => new DataContext(r.Resolve<TConnectionFactory>(slot)));
 					container.Register<IDataConnection>(slot, r => new DataConnection(r.Resolve<DataContext>(slot)));
-                    container.Register<IDataConnection<TScope>>(r => new DataConnection<TScope>(r.Resolve<DataContext>(slot)));
+					container.Register<IDataConnection<TScope>>(r =>
+						new DataConnection<TScope>(r.Resolve<DataContext>(slot)));
 					break;
 				case ConnectionScope.ByRequest:
-					container.Register(slot, r => new DataContext(r.Resolve<TConnectionFactory>(slot)), InstanceIsUnique.PerHttpRequest);
-					container.Register<IDataConnection>(slot, r => new DataConnection(r.Resolve<DataContext>(slot)), InstanceIsUnique.PerHttpRequest);
-                    container.Register<IDataConnection<TScope>>(r => new DataConnection<TScope>(r.Resolve<DataContext>(slot)), InstanceIsUnique.PerHttpRequest);
+					container.Register(slot, r => new DataContext(r.Resolve<TConnectionFactory>(slot)),
+						InstanceIsUnique.PerHttpRequest);
+					container.Register<IDataConnection>(slot, r => new DataConnection(r.Resolve<DataContext>(slot)),
+						InstanceIsUnique.PerHttpRequest);
+					container.Register<IDataConnection<TScope>>(
+						r => new DataConnection<TScope>(r.Resolve<DataContext>(slot)), InstanceIsUnique.PerHttpRequest);
 					break;
 				case ConnectionScope.ByThread:
-					container.Register(slot, r => new DataContext(r.Resolve<TConnectionFactory>(slot)), InstanceIsUnique.PerThread);
-					container.Register<IDataConnection>(slot, r => new DataConnection(r.Resolve<DataContext>(slot)), InstanceIsUnique.PerThread);
-                    container.Register<IDataConnection<TScope>>(r => new DataConnection<TScope>(r.Resolve<DataContext>(slot)), InstanceIsUnique.PerThread);
+					container.Register(slot, r => new DataContext(r.Resolve<TConnectionFactory>(slot)),
+						InstanceIsUnique.PerThread);
+					container.Register<IDataConnection>(slot, r => new DataConnection(r.Resolve<DataContext>(slot)),
+						InstanceIsUnique.PerThread);
+					container.Register<IDataConnection<TScope>>(
+						r => new DataConnection<TScope>(r.Resolve<DataContext>(slot)), InstanceIsUnique.PerThread);
 					break;
 				case ConnectionScope.KeepAlive:
-					container.Register(slot, r => new DataContext(r.Resolve<TConnectionFactory>(slot)), InstanceIsUnique.PerProcess);
-					container.Register<IDataConnection>(slot, r => new DataConnection(r.Resolve<DataContext>(slot)), InstanceIsUnique.PerProcess);
-                    container.Register<IDataConnection<TScope>>(r => new DataConnection<TScope>(r.Resolve<DataContext>(slot)), InstanceIsUnique.PerProcess);
+					container.Register(slot, r => new DataContext(r.Resolve<TConnectionFactory>(slot)),
+						InstanceIsUnique.PerProcess);
+					container.Register<IDataConnection>(slot, r => new DataConnection(r.Resolve<DataContext>(slot)),
+						InstanceIsUnique.PerProcess);
+					container.Register<IDataConnection<TScope>>(
+						r => new DataConnection<TScope>(r.Resolve<DataContext>(slot)), InstanceIsUnique.PerProcess);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(scope), scope, null);
 			}
-			
+
 			services.AddTransient(r => container.Resolve<IDataConnection<TScope>>());
-            return services;
+			return services;
 		}
 	}
 }

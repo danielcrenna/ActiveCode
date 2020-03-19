@@ -16,10 +16,7 @@ namespace ActiveConnection
 
 		private volatile IDbTransaction _transaction;
 
-		public DataConnection(DataContext current)
-		{
-			_current = current;
-		}
+		public DataConnection(DataContext current) => _current = current;
 
 		public IDbConnection Current => _current.Connection;
 		public IDbTransaction Transaction => _transaction;
