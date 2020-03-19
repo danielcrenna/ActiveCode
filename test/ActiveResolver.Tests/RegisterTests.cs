@@ -76,6 +76,19 @@ namespace ActiveResolver.Tests
 
             return resolved != null;
         }
+
+        public bool Can_resolve_through_fallback()
+        {
+            var fallback = new DependencyContainer();
+            fallback.Register(typeof(IFoo), () => new Bar());
+
+            var container = new DependencyContainer(fallback);
+
+            var serviceProvider = (IServiceProvider) fallback;
+            var resolved = serviceProvider.GetService<IFoo>();
+
+            return resolved != null;
+        }
 		
         public interface IFoo { }
 		public class Bar : IFoo { }

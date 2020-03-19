@@ -11,10 +11,12 @@ namespace ActiveResolver
 {
     public class DependencyContainer : IServiceProvider
     {
+        private readonly IServiceProvider _fallback;
         private readonly ConcurrentDictionary<NameAndType, List<Func<object>>> _registrations;
 
-        public DependencyContainer()
+        public DependencyContainer(IServiceProvider fallback = null)
         {
+            _fallback = fallback;
             _registrations = new ConcurrentDictionary<NameAndType, List<Func<object>>>();
         }
 
@@ -92,37 +94,18 @@ namespace ActiveResolver
                 }
             }
 
+            var fallback = _fallback?.GetService(type);
+            if (fallback != null)
+            {
+                instance = fallback;
+                return true;
+            }
+
             instance = default;
             return false;
         }
 
-        public struct NameAndType : IEquatable<NameAndType>
-        {
-            public readonly Type Type;
-            public readonly string Name;
-
-            public NameAndType(string name, Type type)
-            {
-                Name = name;
-                Type = type;
-            }
-
-            public bool Equals(NameAndType other) => Type == other.Type && Name == other.Name;
-			public override bool Equals(object obj) => obj is NameAndType other && Equals(other);
-
-            public static bool operator ==(NameAndType left, NameAndType right) => left.Equals(right);
-            public static bool operator !=(NameAndType left, NameAndType right) => !left.Equals(right);
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    return ((Type != null ? Type.GetHashCode() : 0) * 397) ^ (Name != null ? Name.GetHashCode() : 0);
-                }
-            }
-        }
-
-		#region IServiceProvider
+        #region IServiceProvider
 
         public object GetService(Type serviceType)
         {
@@ -131,5 +114,31 @@ namespace ActiveResolver
         }
 
 		#endregion
+
+        private struct NameAndType : IEquatable<NameAndType>
+        {
+            private readonly Type _type;
+            private readonly string _name;
+
+            public NameAndType(string name, Type type)
+            {
+                _name = name;
+                _type = type;
+            }
+
+            public bool Equals(NameAndType other) => _type == other._type && _name == other._name;
+            public override bool Equals(object obj) => obj is NameAndType other && Equals(other);
+
+            public static bool operator ==(NameAndType left, NameAndType right) => left.Equals(right);
+            public static bool operator !=(NameAndType left, NameAndType right) => !left.Equals(right);
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return ((_type != null ? _type.GetHashCode() : 0) * 397) ^ (_name != null ? _name.GetHashCode() : 0);
+                }
+            }
+        }
     }
 }
