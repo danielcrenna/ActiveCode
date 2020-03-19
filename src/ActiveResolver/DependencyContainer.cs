@@ -11,13 +11,13 @@ namespace ActiveResolver
 {
     public class DependencyContainer : IServiceProvider
     {
-        private readonly IServiceProvider _fallback;
         private readonly ConcurrentDictionary<NameAndType, List<Func<object>>> _registrations;
+        private readonly IServiceProvider _fallback;
 
         public DependencyContainer(IServiceProvider fallback = null)
         {
-            _fallback = fallback;
             _registrations = new ConcurrentDictionary<NameAndType, List<Func<object>>>();
+            _fallback = fallback;
         }
 
         public DependencyContainer Register(string name, Type type, Func<object> builder)
@@ -94,12 +94,16 @@ namespace ActiveResolver
                 }
             }
 
-            var fallback = _fallback?.GetService(type);
-            if (fallback != null)
+            if (!type.IsAbstract)
             {
-                instance = fallback;
-                return true;
+                instance = Instancing.CreateInstance(type, this);
+                if (instance != null)
+                    return true;
             }
+
+            instance = _fallback?.GetService(type);
+            if (instance != null)
+                return true;
 
             instance = default;
             return false;

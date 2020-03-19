@@ -102,8 +102,26 @@ namespace ActiveResolver.Tests
 
             return resolved != null;
         }
-		
-        public interface IFoo { }
+
+        public bool Can_auto_resolve_dependent_type()
+        {
+            var container = new DependencyContainer();
+            container.Register(typeof(IFoo), () => new Bar());
+
+            container.TryResolve(typeof(Baz), out var baz);
+            return baz != null;
+        }
+
+		public interface IFoo { }
 		public class Bar : IFoo { }
+        public class Baz
+        {
+            private readonly IFoo _foo;
+
+            public Baz(IFoo foo)
+            {
+                _foo = foo;
+            }
+        }
     }
 }
