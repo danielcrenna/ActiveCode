@@ -67,14 +67,20 @@ namespace ActiveResolver
 
         public static DependencyContainer Register<T>(this DependencyContainer container, Func<DependencyContainer, T> builder) => Register(container, Constants.DefaultName, builder);
         public static DependencyContainer Register<T>(this DependencyContainer container, string name, Func<DependencyContainer, T> builder) => container.Register(name, typeof(T), () => builder(container));
-
-        public static DependencyContainer Register(this DependencyContainer container, Type type, Func<DependencyContainer, object> builder) => Register(container, Constants.DefaultName, type, builder);
-        public static DependencyContainer Register(this DependencyContainer container, string name, Type type, Func<DependencyContainer, object> builder) => container.Register(name, type, () => builder(container));
-
         public static DependencyContainer Register<T>(this DependencyContainer container, T instance) => Register(container, Constants.DefaultName, instance);
         public static DependencyContainer Register<T>(this DependencyContainer container, string name, T instance) => container.Register(name, typeof(T), () => instance);
+		
+        public static DependencyContainer Register(this DependencyContainer container, Type type, Func<DependencyContainer, object> builder) => Register(container, Constants.DefaultName, type, builder);
+        public static DependencyContainer Register(this DependencyContainer container, string name, Type type, Func<DependencyContainer, object> builder) => container.Register(name, type, () => builder(container));
         public static DependencyContainer Register(this DependencyContainer container, object instance) => Register(container, Constants.DefaultName, instance);
         public static DependencyContainer Register(this DependencyContainer container, string name, object instance) => container.Register(name, instance.GetType(), () => instance);
-        
+
+        public static DependencyContainer Register<T>(this DependencyContainer container, Func<DependencyContainer, T> builder, Func<Func<DependencyContainer,T>, Func<DependencyContainer,T>> memoFunc) => Register(container, Constants.DefaultName, builder, memoFunc);
+        public static DependencyContainer Register<T>(this DependencyContainer container, string name, Func<DependencyContainer, T> builder, Func<Func<DependencyContainer,T>, Func<DependencyContainer,T>> memoFunc)
+        {
+            var memo = memoFunc(builder);
+            object Memo() => memo(container);
+            return container.Register(name, typeof(T), Memo);
+        }
     }
 }

@@ -17,6 +17,14 @@ namespace ActiveResolver
             return () => cache.GetOrAdd(typeof(T), v => f());
         }
 
+        public static Func<DependencyContainer, T> PerProcess<T>(Func<DependencyContainer, T> f)
+        {
+	        var cache = new ConcurrentDictionary<Type, T>();
+
+	        return r => cache.GetOrAdd(typeof(T), v => f(r));
+        }
+
+
         public static Func<T> PerThread<T>(Func<T> f)
         {
             var cache = new ThreadLocal<T>(f);
@@ -24,26 +32,33 @@ namespace ActiveResolver
             return () => cache.Value;
         }
 
-        public static Func<T> PerHttpRequest<T>(IServiceProvider host, Func<T> f)
+        public static Func<DependencyContainer, T> PerThread<T>(DependencyContainer host, Func<DependencyContainer, T> f)
         {
-            return () =>
-            {
-                var accessor = host.GetService(typeof(IHttpContextAccessor)) as IHttpContextAccessor;
-                if (accessor?.HttpContext == null)
-                    return f();
+	        var cache = new ThreadLocal<T>(()=> f(host));
 
-                var cache = accessor.HttpContext.Items;
-                var cacheKey = f.ToString();
-                if (cache.TryGetValue(cacheKey, out var item))
-                    return (T) item;
+	        return r => cache.Value;
+        }
 
-                item = f(); // need it
-                cache.Add(cacheKey, item);
-                if (item is IDisposable disposable)
-                    accessor.HttpContext.Response.RegisterForDispose(disposable);
+        public static Func<DependencyContainer, T>  PerHttpRequest<T>(Func<DependencyContainer, T> f)
+        {
+	        return r =>
+	        {
+		        var accessor = r.GetService(typeof(IHttpContextAccessor)) as IHttpContextAccessor;
+		        if (accessor?.HttpContext == null)
+			        return f(r);
 
-                return (T) item;
-            };
+		        var cache = accessor.HttpContext.Items;
+		        var cacheKey = f.ToString();
+		        if (cache.TryGetValue(cacheKey, out var item))
+			        return (T) item;
+
+		        item = f(r);
+		        cache.Add(cacheKey, item);
+		        if (item is IDisposable disposable)
+			        accessor.HttpContext.Response.RegisterForDispose(disposable);
+
+		        return (T) item;
+	        };
         }
     }
 }
