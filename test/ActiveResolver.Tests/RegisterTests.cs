@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ActiveResolver.Tests
@@ -66,13 +67,25 @@ namespace ActiveResolver.Tests
                    list.Count == 4 && list[0] != list[1] && list[1] != list[2] && list[2] != list[3];
         }
 
+        public bool Can_resolve_enumerable_through_service_provider()
+        {
+            var container = new DependencyContainer();
+            container.Register(typeof(IFoo), () => new Bar());
+            container.Register(typeof(IFoo), () => new Bar());
+
+            var serviceProvider = (IServiceProvider) container;
+            var resolved = serviceProvider.GetServices<IFoo>();
+
+            return resolved != null && resolved.Count() == 2;
+        }
+
         public bool Can_resolve_through_service_provider()
         {
             var container = new DependencyContainer();
             container.Register(typeof(IFoo), () => new Bar());
 
             var serviceProvider = (IServiceProvider) container;
-            var resolved = serviceProvider.GetService<IFoo>();
+            var resolved = serviceProvider.GetRequiredService<IFoo>();
 
             return resolved != null;
         }
@@ -84,7 +97,7 @@ namespace ActiveResolver.Tests
 
             var container = new DependencyContainer(fallback);
 
-            var serviceProvider = (IServiceProvider) fallback;
+            var serviceProvider = (IServiceProvider) container;
             var resolved = serviceProvider.GetService<IFoo>();
 
             return resolved != null;
