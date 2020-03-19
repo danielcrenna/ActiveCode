@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ActiveResolver
 {
@@ -75,12 +77,26 @@ namespace ActiveResolver
         public static DependencyContainer Register(this DependencyContainer container, object instance) => Register(container, Constants.DefaultName, instance);
         public static DependencyContainer Register(this DependencyContainer container, string name, object instance) => container.Register(name, instance.GetType(), () => instance);
 
-        public static DependencyContainer Register<T>(this DependencyContainer container, Func<DependencyContainer, T> builder, Func<Func<DependencyContainer,T>, Func<DependencyContainer,T>> memoFunc) => Register(container, Constants.DefaultName, builder, memoFunc);
+		public static DependencyContainer Register<T>(this DependencyContainer container, Func<DependencyContainer, T> builder, Func<Func<DependencyContainer,T>, Func<DependencyContainer,T>> memoFunc) => Register(container, Constants.DefaultName, builder, memoFunc);
         public static DependencyContainer Register<T>(this DependencyContainer container, string name, Func<DependencyContainer, T> builder, Func<Func<DependencyContainer,T>, Func<DependencyContainer,T>> memoFunc)
         {
             var memo = memoFunc(builder);
             object Memo() => memo(container);
             return container.Register(name, typeof(T), Memo);
+        }
+
+        public static IEnumerable<T> ResolveAll<T>(this DependencyContainer container) => ResolveAll<T>(container, Constants.DefaultName);
+        public static IEnumerable<T> ResolveAll<T>(this DependencyContainer container, string name)
+        {
+            container.TryResolve<IEnumerable<T>>(name, out var enumerable);
+            return enumerable ?? Enumerable.Empty<T>();
+        }
+
+        public static IEnumerable<object> ResolveAll(this DependencyContainer container, Type type) => ResolveAll(container, Constants.DefaultName, type);
+        public static IEnumerable<object> ResolveAll(this DependencyContainer container, string name, Type type)
+        {
+            container.TryResolve(name, typeof(IEnumerable<>).MakeGenericType(type), out var enumerable);
+            return enumerable as IEnumerable<object>;
         }
     }
 }

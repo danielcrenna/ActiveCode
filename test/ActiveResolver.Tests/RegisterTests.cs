@@ -43,6 +43,7 @@ namespace ActiveResolver.Tests
             var container = new DependencyContainer();
             container.Register(typeof(IFoo), () => new Bar(), InstanceIsUnique.PerProcess);
             container.Register(typeof(IFoo), () => new Bar(), InstanceIsUnique.PerProcess);
+            
             return container.TryResolve<IEnumerable<IFoo>>(out var instance) && 
                 instance is List<IFoo> list && list.Count == 2 && list[0] != list[1];
         }
