@@ -11,8 +11,8 @@
     <RepositoryUrl>https://github.com/danielcrenna/ActiveErrors</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>dynamic errors exceptions</PackageTags>
-    <Version>1.0.3</Version>
-    <PackageReleaseNotes>Update dependencies.</PackageReleaseNotes>
+    <Version>1.0.4</Version>
+    <PackageReleaseNotes>Added operation to result extensions.</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
