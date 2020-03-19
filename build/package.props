@@ -11,8 +11,8 @@
     <RepositoryUrl>https://github.com/danielcrenna/ActiveConnection</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>dynamic database connection session migration</PackageTags>
-    <Version>1.0.1</Version>
-    <PackageReleaseNotes>Added migration helpers.</PackageReleaseNotes>
+    <Version>1.0.2</Version>
+    <PackageReleaseNotes>Update dependencies.</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
