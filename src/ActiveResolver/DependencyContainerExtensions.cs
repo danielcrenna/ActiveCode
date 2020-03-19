@@ -7,7 +7,23 @@ namespace ActiveResolver
 {
     public static class DependencyContainerExtensions
     {
-        public static DependencyContainer Register(this DependencyContainer container, Type type, Func<object> builder, Func<Func<object>, Func<object>> memoFunc = null) => container.Register(Constants.DefaultName, type, builder, memoFunc);
+        public static bool CanResolve(this DependencyContainer container, string name, Type type) => container.TryResolve(name, type, out _);
+        public static bool CanResolve(this DependencyContainer container, Type type) => container.TryResolve(Constants.DefaultName, type, out _);
+        public static bool CanResolve<T>(this DependencyContainer container, string name) => container.TryResolve<T>(name, out _);
+        public static bool CanResolve<T>(this DependencyContainer container) => container.TryResolve<T>(Constants.DefaultName, out _);
+
+        public static T Resolve<T>(this DependencyContainer container, string name) => (T) Resolve(container, name, typeof(T));
+        public static T Resolve<T>(this DependencyContainer container) => (T) Resolve(container, Constants.DefaultName, typeof(T));
+        public static object Resolve(this DependencyContainer container, Type type) => Resolve(container, Constants.DefaultName, type);
+        public static object Resolve(this DependencyContainer container, string name, Type type)
+        {
+            if (!container.TryResolve(name, type, out var instance))
+                throw new InvalidOperationException($"No registration for '{(name == Constants.DefaultName ? string.Empty : $"[{name}] ")}{type.FullName}'");
+
+            return instance;
+        }
+
+        public static DependencyContainer Register(this DependencyContainer container, Type type, Func<object> builder, Func<Func<object>, Func<object>> memoFunc = null) => Register(container, Constants.DefaultName, type, builder, memoFunc);
         public static DependencyContainer Register(this DependencyContainer container, string name, Type type, Func<object> builder, Func<Func<object>, Func<object>> memoFunc = null)
         {
             if (memoFunc == null)
@@ -48,5 +64,11 @@ namespace ActiveResolver
             instance = default;
             return false;
         }
+
+        public static DependencyContainer Register<T>(this DependencyContainer container, Func<DependencyContainer, object> builder) => Register(container, Constants.DefaultName, typeof(T), builder);
+        public static DependencyContainer Register<T>(this DependencyContainer container, string name, Func<DependencyContainer, object> builder) => Register(container, name, typeof(T), builder);
+        public static DependencyContainer Register(this DependencyContainer container, Type type, Func<DependencyContainer, object> builder) => Register(container, Constants.DefaultName, type, builder);
+        public static DependencyContainer Register(this DependencyContainer container, string name, Type type, Func<DependencyContainer, object> builder) => container.Register(name, type, () => builder(container));
+        
     }
 }

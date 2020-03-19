@@ -112,15 +112,35 @@ namespace ActiveResolver.Tests
             return baz != null;
         }
 
+        public bool Can_resolve_inner_dependencies_with_service_provider()
+        {
+            var container = new DependencyContainer();
+            container.Register("A", typeof(IFoo), () => new Bar());
+
+			if(!container.CanResolve<IFoo>("A"))
+                return false; // not in the right slot
+
+            if (container.CanResolve("B", typeof(IFoo)))
+                return false; // not in the right slot
+
+            if (container.TryResolve(out IFoo _))
+                return false; // not in the right slot
+
+            container.Register("B", typeof(Baz), r => new Baz(r.Resolve<IFoo>("A")));
+
+            var result = container.TryResolve<Baz>("B", out var baz);
+            return result && baz?.Foo != null;
+        }
+
 		public interface IFoo { }
 		public class Bar : IFoo { }
         public class Baz
         {
-            private readonly IFoo _foo;
+            public IFoo Foo { get; }
 
             public Baz(IFoo foo)
             {
-                _foo = foo;
+                Foo = foo;
             }
         }
     }
