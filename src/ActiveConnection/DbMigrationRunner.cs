@@ -4,27 +4,76 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using FluentMigrator.Infrastructure;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.Initialization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace ActiveConnection
 {
-	public abstract class DbMigrationRunner
+	public abstract class DbMigrationRunner<TOptions> where TOptions : class, IDbConnectionOptions, new()
 	{
-		protected DbMigrationRunner(string connectionString) => ConnectionString = connectionString;
+		private readonly IOptions<TOptions> _options;
+
 		public string ConnectionString { get; }
 
-		public abstract void CreateDatabaseIfNotExists();
+		protected DbMigrationRunner(string connectionString, IOptions<TOptions> options)
+		{
+			ConnectionString = connectionString;
+			_options = options;
+		}
+		
+		public abstract Task CreateDatabaseIfNotExistsAsync();
 		public abstract void ConfigureRunner(IMigrationRunnerBuilder builder);
 
-		public void MigrateUp<T>()
+		public async Task OnStartAsync<TMigrationInfo>()
 		{
-			MigrateUp(typeof(T).Assembly, typeof(T).Namespace);
+			if (_options.Value.CreateIfNotExists)
+				await CreateDatabaseIfNotExistsAsync();
+
+			if (_options.Value.MigrateOnStartup)
+				MigrateUp<TMigrationInfo>();
+		}
+
+		public void MigrateUp<TMigrationInfo>()
+		{
+			MigrateUp(typeof(TMigrationInfo).Assembly, typeof(TMigrationInfo).Namespace);
+		}
+
+		public void MigrateTo<TMigrationInfo>(long version)
+		{
+			MigrateTo(typeof(TMigrationInfo).Assembly, typeof(TMigrationInfo).Namespace, version);
+		}
+
+		public void MigrateDown<TMigrationInfo>(long version)
+		{
+			MigrateDown(typeof(TMigrationInfo).Assembly, typeof(TMigrationInfo).Namespace, version);
 		}
 
 		public void MigrateUp(Assembly assembly, string ns)
+		{
+			var runner = CreateRunnerInstance(assembly, ns);
+
+			runner.MigrateUp();
+		}
+
+		public void MigrateTo(Assembly assembly, string ns, long version)
+		{
+			var runner = CreateRunnerInstance(assembly, ns);
+
+			runner.MigrateUp(version);
+		}
+
+		public void MigrateDown(Assembly assembly, string ns, long version)
+		{
+			var runner = CreateRunnerInstance(assembly, ns);
+
+			runner.MigrateDown(version);
+		}
+
+		private IMigrationRunner CreateRunnerInstance(Assembly assembly, string ns)
 		{
 			var container = new ServiceCollection()
 				.AddFluentMigratorCore()
@@ -39,14 +88,13 @@ namespace ActiveConnection
 				.BuildServiceProvider();
 
 			var runner = container.GetRequiredService<IMigrationRunner>();
-			if (runner is MigrationRunner defaultRunner &&
-			    defaultRunner.MigrationLoader is DefaultMigrationInformationLoader defaultLoader)
+			if (runner is MigrationRunner defaultRunner && defaultRunner.MigrationLoader is DefaultMigrationInformationLoader defaultLoader)
 			{
 				var source = container.GetRequiredService<IFilteringMigrationSource>();
 				defaultRunner.MigrationLoader = new NamespaceMigrationInformationLoader(ns, source, defaultLoader);
 			}
 
-			runner.MigrateUp();
+			return runner;
 		}
 
 		private class NamespaceMigrationInformationLoader : IMigrationInformationLoader

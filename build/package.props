@@ -10,9 +10,9 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/danielcrenna/ActiveConnection</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>dynamic database connection session</PackageTags>
-    <Version>1.0.0</Version>
-    <PackageReleaseNotes>Initial implementation.</PackageReleaseNotes>
+    <PackageTags>dynamic database connection session migration</PackageTags>
+    <Version>1.0.1</Version>
+    <PackageReleaseNotes>Added migration helpers.</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
