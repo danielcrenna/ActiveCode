@@ -65,8 +65,9 @@ namespace ActiveResolver
             return false;
         }
 
-        public static DependencyContainer Register<T>(this DependencyContainer container, Func<DependencyContainer, object> builder) => Register(container, Constants.DefaultName, typeof(T), builder);
-        public static DependencyContainer Register<T>(this DependencyContainer container, string name, Func<DependencyContainer, object> builder) => Register(container, name, typeof(T), builder);
+        public static DependencyContainer Register<T>(this DependencyContainer container, Func<DependencyContainer, T> builder) => Register(container, Constants.DefaultName, builder);
+        public static DependencyContainer Register<T>(this DependencyContainer container, string name, Func<DependencyContainer, T> builder) => container.Register(name, typeof(T), () => builder(container));
+
         public static DependencyContainer Register(this DependencyContainer container, Type type, Func<DependencyContainer, object> builder) => Register(container, Constants.DefaultName, type, builder);
         public static DependencyContainer Register(this DependencyContainer container, string name, Type type, Func<DependencyContainer, object> builder) => container.Register(name, type, () => builder(container));
 
