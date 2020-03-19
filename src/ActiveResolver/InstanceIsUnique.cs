@@ -24,22 +24,24 @@ namespace ActiveResolver
 	        return r => cache.GetOrAdd(typeof(T), v => f(r));
         }
 
-
         public static Func<T> PerThread<T>(Func<T> f)
         {
             var cache = new ThreadLocal<T>(f);
-
             return () => cache.Value;
         }
 
-        public static Func<DependencyContainer, T> PerThread<T>(DependencyContainer host, Func<DependencyContainer, T> f)
+        public static Func<DependencyContainer, T> PerThread<T>(Func<DependencyContainer, T> f)
         {
-	        var cache = new ThreadLocal<T>(()=> f(host));
+	        T Thread(DependencyContainer r)
+	        {
+		        T ValueFactory() => f(r);
+		        return new ThreadLocal<T>(ValueFactory).Value;
+	        }
 
-	        return r => cache.Value;
+	        return Thread;
         }
 
-        public static Func<DependencyContainer, T>  PerHttpRequest<T>(Func<DependencyContainer, T> f)
+        public static Func<DependencyContainer, T> PerHttpRequest<T>(Func<DependencyContainer, T> f)
         {
 	        return r =>
 	        {
