@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ActiveResolver.Tests
 {
-    public class RegisterTests
+	public class RegisterTests
     {
         public bool Can_register_type_with_transient_lifetime()
         {
