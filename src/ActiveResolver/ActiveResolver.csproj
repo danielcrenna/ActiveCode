@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Include="TypeKitchen" Version="1.2.7" />
+    <PackageReference Include="TypeKitchen" Version="1.2.9" />
     <PackageReference Include="TypeKitchen.Creation" Version="1.2.9" />
   </ItemGroup>
 
