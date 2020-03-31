@@ -4,7 +4,6 @@
 using System;
 using System.Text.Json;
 using ActiveCaching.Configuration;
-using ActiveCaching.Internal;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,7 +45,8 @@ namespace ActiveCaching
 		{
 			services.TryAddSingleton<IHttpCache, InProcessHttpCache>();
 			services.TryAddSingleton<IETagGenerator, WeakETagGenerator>();
-			services.AddScoped(r => new HttpCacheFilterAttribute(r.GetRequiredService<IETagGenerator>(), r.GetRequiredService<IHttpCache>(), r.GetRequiredService<JsonSerializerOptions>()));
+			services.AddScoped(r => new HttpCacheFilterAttribute(r.GetRequiredService<IETagGenerator>(),
+				r.GetRequiredService<IHttpCache>(), r.GetRequiredService<JsonSerializerOptions>()));
 			return services;
 		}
 	}

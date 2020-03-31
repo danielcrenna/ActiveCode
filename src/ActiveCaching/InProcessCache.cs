@@ -3,7 +3,6 @@
 
 using System;
 using ActiveCaching.Configuration;
-using ActiveCaching.Internal;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
@@ -349,10 +348,10 @@ namespace ActiveCaching
 
 			if (add == null)
 				return null;
-			
+
 			var itemToAdd = add();
 			if (itemToAdd != null)
-				this.Add(key, itemToAdd);
+				Add(key, itemToAdd);
 			return itemToAdd;
 		}
 

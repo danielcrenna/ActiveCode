@@ -11,8 +11,8 @@
     <RepositoryUrl>https://github.com/danielcrenna/ActiveCaching</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>dynamic caching</PackageTags>
-    <Version>1.0.4</Version>
-    <PackageReleaseNotes>Add default HTTP caching implementation.</PackageReleaseNotes>
+    <Version>1.0.5</Version>
+    <PackageReleaseNotes>Add cache key value store.</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>

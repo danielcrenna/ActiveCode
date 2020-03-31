@@ -1,15 +1,14 @@
 // Copyright (c) Daniel Crenna & Contributors. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-
 namespace ActiveCaching
 {
-	/// <summary>
-	///     See: https://tools.ietf.org/html/rfc7232#section-2
-	/// </summary>
-	public interface IETagGenerator
+	public static class Constants
 	{
-		string GenerateFromBuffer(ReadOnlySpan<byte> data);
+		public static class ContextKeys
+		{
+			public const string CacheArgument = nameof(CacheArgument);
+			public const string CacheKeyArgument = nameof(CacheKeyArgument);
+		}
 	}
 }

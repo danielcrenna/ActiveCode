@@ -12,9 +12,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Net.Http.Headers;
 using TypeKitchen;
 
-namespace ActiveCaching.Internal
+namespace ActiveCaching
 {
-	public class HttpCacheFilterAttribute : ActionFilterAttribute
+	public sealed class HttpCacheFilterAttribute : ActionFilterAttribute
 	{
 		private readonly IHttpCache _cache;
 		private readonly IETagGenerator _generator;
@@ -81,7 +81,7 @@ namespace ActiveCaching.Internal
 			_cache.Save(cacheKey, etag);
 
 			var members = AccessorMembers.Create(body, AccessorMemberTypes.Properties, AccessorMemberScope.Public);
-			foreach(var member in members)
+			foreach (var member in members)
 				if (member.HasAttribute<CacheTimestampAttribute>())
 				{
 					var accessor = ReadAccessor.Create(body);
@@ -90,11 +90,13 @@ namespace ActiveCaching.Internal
 						switch (lastModifiedDate)
 						{
 							case DateTimeOffset timestamp:
-								context.HttpContext.Response.Headers.Add(HeaderNames.LastModified, timestamp.ToString("R"));
+								context.HttpContext.Response.Headers.Add(HeaderNames.LastModified,
+									timestamp.ToString("R"));
 								_cache.Save(cacheKey, timestamp);
 								break;
 							case DateTime timestamp:
-								context.HttpContext.Response.Headers.Add(HeaderNames.LastModified, timestamp.ToString("R"));
+								context.HttpContext.Response.Headers.Add(HeaderNames.LastModified,
+									timestamp.ToString("R"));
 								_cache.Save(cacheKey, timestamp);
 								break;
 						}

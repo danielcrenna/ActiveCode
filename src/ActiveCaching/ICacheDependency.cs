@@ -6,7 +6,6 @@ using Microsoft.Extensions.Primitives;
 
 namespace ActiveCaching
 {
-
 	public interface ICacheDependency : IDisposable
 	{
 		IChangeToken GetChangeToken();

@@ -5,12 +5,10 @@ using System;
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text;
-using ActiveCaching.Configuration;
 using ActiveCaching.Internal;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Internal;
-using Microsoft.Extensions.Options;
 using TypeKitchen;
 using SysOptions = Microsoft.Extensions.Options.Options;
 
@@ -441,7 +439,10 @@ namespace ActiveCaching
 
 		#region Get
 
-		public object Get(string key, TimeSpan? timeout = null) => GetOrAdd(key, null, timeout);
+		public object Get(string key, TimeSpan? timeout = null)
+		{
+			return GetOrAdd(key, null, timeout);
+		}
 
 		public object GetOrAdd(string key, Func<object> add = null, TimeSpan? timeout = null)
 		{
@@ -463,18 +464,27 @@ namespace ActiveCaching
 
 			if (add == null)
 				return null;
-			
+
 			var itemToAdd = add();
 			if (itemToAdd != null)
 				Add(key, itemToAdd);
 			return itemToAdd;
 		}
 
-		public object GetOrAdd(string key, object add = null, TimeSpan? timeout = null) => GetOrAdd(key, () => add, timeout);
+		public object GetOrAdd(string key, object add = null, TimeSpan? timeout = null)
+		{
+			return GetOrAdd(key, () => add, timeout);
+		}
 
-		public T Get<T>(string key, TimeSpan? timeout = null) => GetOrAdd<T>(key, null, timeout);
+		public T Get<T>(string key, TimeSpan? timeout = null)
+		{
+			return GetOrAdd<T>(key, null, timeout);
+		}
 
-		public T GetOrAdd<T>(string key, T add = default, TimeSpan? timeout = null) => GetOrAdd(key, () => add, timeout);
+		public T GetOrAdd<T>(string key, T add = default, TimeSpan? timeout = null)
+		{
+			return GetOrAdd(key, () => add, timeout);
+		}
 
 		public T GetOrAdd<T>(string key, Func<T> add = null, TimeSpan? timeout = null)
 		{

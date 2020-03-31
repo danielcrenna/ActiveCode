@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="ActiveStorage" Version="1.0.0-pre-3" />
     <PackageReference Include="System.Text.Json" Version="4.7.1" />
     <PackageReference Include="TypeKitchen.Serialization" Version="1.2.12" />
     <PackageReference Include="WebStrings" Version="1.1.0" />

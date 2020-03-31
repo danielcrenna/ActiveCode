@@ -5,9 +5,8 @@ using System;
 
 namespace ActiveCaching
 {
-	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+	[AttributeUsage(AttributeTargets.Property)]
 	public class CacheTimestampAttribute : Attribute
 	{
-
 	}
 }
