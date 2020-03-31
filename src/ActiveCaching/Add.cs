@@ -2,7 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Text.Json;
 using ActiveCaching.Configuration;
+using ActiveCaching.Internal;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +39,14 @@ namespace ActiveCaching
 			services.TryAdd(ServiceDescriptor.Singleton<IDistributedCache, MemoryDistributedCache>());
 			services.TryAdd(ServiceDescriptor.Singleton<ICache, DistributedCache>());
 
+			return services;
+		}
+
+		public static IServiceCollection AddHttpCaching(this IServiceCollection services)
+		{
+			services.TryAddSingleton<IHttpCache, InProcessHttpCache>();
+			services.TryAddSingleton<IETagGenerator, WeakETagGenerator>();
+			services.AddScoped(r => new HttpCacheFilterAttribute(r.GetRequiredService<IETagGenerator>(), r.GetRequiredService<IHttpCache>(), r.GetRequiredService<JsonSerializerOptions>()));
 			return services;
 		}
 	}
