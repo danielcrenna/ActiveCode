@@ -11,8 +11,8 @@
     <RepositoryUrl>https://github.com/danielcrenna/ActiveResolver</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>dynamic dependency injection DI IoC</PackageTags>
-    <Version>1.0.6</Version>
-    <PackageReleaseNotes>Update dependencies.</PackageReleaseNotes>
+    <Version>1.0.7</Version>
+    <PackageReleaseNotes>Add Graphviz configure hook.</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
