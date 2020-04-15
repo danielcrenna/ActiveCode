@@ -22,7 +22,7 @@ namespace ActiveResolver.Api
 
 		public void Configure(MvcOptions options)
 		{
-			options.OutputFormatters.Add((IOutputFormatter) new GraphVizOutputFormatter());
+			options.OutputFormatters.Add(new GraphVizOutputFormatter());
 		}
 	}
 }
