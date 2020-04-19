@@ -3,16 +3,20 @@
 
 using System;
 using System.Diagnostics;
+using ActiveLogging.Internal;
+using ActiveOptions;
+using ActiveStorage;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Configuration;
 
 namespace ActiveLogging
 {
 	public static class Add
 	{
-		private static readonly ActionTraceListener ActionTraceListener =
-			new ActionTraceListener(Console.Write, Console.WriteLine);
+		private static readonly ActionTraceListener ActionTraceListener = new ActionTraceListener(Console.Write, Console.WriteLine);
 
 		public static IServiceCollection AddSafeLogging(this IServiceCollection services)
 		{
@@ -49,6 +53,26 @@ namespace ActiveLogging
 		public static ILoggingBuilder AddSafeLogging(this ILoggingBuilder builder)
 		{
 			builder.Services.AddSafeLogging();
+			return builder;
+		}
+
+		public static ILoggingBuilder AddActiveStorage(this ILoggingBuilder builder, IConfiguration config) => 
+			builder.AddActiveStorage(config.FastBind);
+
+		public static ILoggingBuilder AddActiveStorage(this ILoggingBuilder builder, Action<ActiveStorageLoggerOptions> configureAction = null)
+		{
+			if (configureAction != null)
+				builder.Services.Configure(configureAction);
+
+			builder.AddConfiguration();
+			
+			builder.Services.AddHttpContextAccessor();
+			builder.Services.TryAddSingleton<ILogReceiver, HttpContextLogReceiver>();
+			builder.Services.TryAddSingleton<IAsyncLogFlusher, ActiveStorageAsyncLogFlusher>();
+			
+			builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, ActiveStorageLoggerProvider>());
+			builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IDataMigratorInfoProvider, ActiveStorageMigratorInfoProvider>());
+
 			return builder;
 		}
 	}

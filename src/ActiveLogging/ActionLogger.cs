@@ -14,9 +14,7 @@ namespace ActiveLogging
 		private readonly Func<object[], string> _formatter;
 		private readonly Action<string> _writeLine;
 
-		public ActionLogger(string categoryName,
-			Action<string> writeLine,
-			Func<object[], string> formatter = null)
+		public ActionLogger(string categoryName, Action<string> writeLine, Func<object[], string> formatter = null)
 		{
 			_writeLine = writeLine;
 			_formatter = formatter ?? DefaultFormatter;
