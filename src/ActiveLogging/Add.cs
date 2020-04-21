@@ -68,10 +68,10 @@ namespace ActiveLogging
 			
 			builder.Services.AddHttpContextAccessor();
 			builder.Services.TryAddSingleton<ILogReceiver, HttpContextLogReceiver>();
-			builder.Services.TryAddSingleton<IAsyncLogFlusher, ActiveStorageAsyncLogFlusher>();
+			builder.Services.TryAddTransient<IAsyncLogFlusher, ActiveStorageAsyncLogFlusher>();
 			
 			builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, ActiveStorageLoggerProvider>());
-			builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IDataMigratorInfoProvider, ActiveStorageMigratorInfoProvider>());
+			builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IDataMigratorInfoProvider, ActiveLoggingMigratorInfoProvider>());
 
 			return builder;
 		}

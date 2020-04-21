@@ -9,9 +9,10 @@ namespace ActiveLogging
 	public sealed class LogEntry
 	{
 		public LogLevel LogLevel { get; set; }
-		public EventId EventId { get; set; }
-		public object State { get; set; }
-		public Exception Exception { get; set; }
+		public int EventId { get; set; }
+		public string EventName { get; set; }
+		public string State { get; set; }
+		public string Exception { get; set; }
 		public string Message { get; set; }
 	}
 }

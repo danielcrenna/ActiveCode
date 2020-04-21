@@ -30,7 +30,7 @@ namespace ActiveLogging.Internal
 			{
 				var newQueue = new Queue<LogEntry>();
 				context.Items.Add(QueueContextKey, cached = newQueue);
-				context.Response.RegisterForDisposeAsync(new AsyncLogSink(newQueue, _flusher, this));
+				context.Response.RegisterForDisposeAsync(new BufferedAsyncLogSink(newQueue, _flusher, this));
 			}
 
 			if (cached is Queue<LogEntry> queue)

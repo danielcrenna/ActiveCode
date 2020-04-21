@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ActiveLogging.Internal
 {
-	internal sealed class AsyncLogSink : IAsyncDisposable
+	internal sealed class BufferedAsyncLogSink : IAsyncDisposable
 	{
 		private readonly ILogReceiver _receiver;
 		private readonly IAsyncLogFlusher _flusher;
 		private readonly Queue<LogEntry> _queue;
 
-		public AsyncLogSink(Queue<LogEntry> queue, IAsyncLogFlusher flusher, ILogReceiver receiver)
+		public BufferedAsyncLogSink(Queue<LogEntry> queue, IAsyncLogFlusher flusher, ILogReceiver receiver)
 		{
 			_queue = queue;
 			_flusher = flusher;

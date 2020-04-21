@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -26,5 +27,10 @@ namespace ActiveLogging
 		public IDisposable BeginScope<TState>(TState state) => _scopeProvider.Push(state);
 		public void SetScopeProvider(IExternalScopeProvider scopeProvider) => _scopeProvider = scopeProvider;
 		public void Dispose() { }
+
+		public void ForEachScope<TState>(Action<object, TState> callback, TState state)
+		{
+			_scopeProvider.ForEachScope(callback, state);
+		}
 	}
 }

@@ -7,11 +7,12 @@ using TypeKitchen;
 
 namespace ActiveLogging.Internal
 {
-	internal sealed class ActiveStorageMigratorInfoProvider : IDataMigratorInfoProvider
+	internal sealed class ActiveLoggingMigratorInfoProvider : IDataMigratorInfoProvider
 	{
 		public IEnumerable<AccessorMembers> GetMigrationSubjects()
 		{
-			yield return AccessorMembers.Create(typeof(LogEntry), AccessorMemberTypes.Properties, AccessorMemberScope.Public);
+			yield return AccessorMembers.Create(
+				typeof(LogEntry), AccessorMemberTypes.Properties, AccessorMemberScope.Public);
 		}
 	}
 }
