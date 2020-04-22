@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using ActiveLogging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Demo.Models;
@@ -27,9 +29,15 @@ namespace Demo.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(string requestId)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { RequestId = requestId });
+        }
+
+        public async Task<IActionResult> Logs([FromServices] LogService logService, CancellationToken cancellationToken = default)
+        {
+			var logs = await logService.GetAllLogsAsync("sqlite", cancellationToken);
+	        return View(logs.Data);
         }
     }
 }

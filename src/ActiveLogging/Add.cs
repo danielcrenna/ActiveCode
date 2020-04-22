@@ -67,7 +67,9 @@ namespace ActiveLogging
 			builder.AddConfiguration();
 			
 			builder.Services.AddHttpContextAccessor();
-			builder.Services.TryAddSingleton<ILogReceiver, HttpContextLogReceiver>();
+			
+			builder.Services.TryAddSingleton<LogService>();
+			builder.Services.TryAddSingleton<ILogAppender, HttpContextLogAppender>();
 			builder.Services.TryAddTransient<IAsyncLogFlusher, ActiveStorageAsyncLogFlusher>();
 			
 			builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, ActiveStorageLoggerProvider>());

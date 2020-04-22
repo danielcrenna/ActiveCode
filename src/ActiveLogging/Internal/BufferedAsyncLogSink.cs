@@ -9,25 +9,25 @@ namespace ActiveLogging.Internal
 {
 	internal sealed class BufferedAsyncLogSink : IAsyncDisposable
 	{
-		private readonly ILogReceiver _receiver;
+		private readonly ILogAppender _appender;
 		private readonly IAsyncLogFlusher _flusher;
 		private readonly Queue<LogEntry> _queue;
 
-		public BufferedAsyncLogSink(Queue<LogEntry> queue, IAsyncLogFlusher flusher, ILogReceiver receiver)
+		public BufferedAsyncLogSink(Queue<LogEntry> queue, IAsyncLogFlusher flusher, ILogAppender appender)
 		{
 			_queue = queue;
 			_flusher = flusher;
-			_receiver = receiver;
+			_appender = appender;
 		}
 
 		public async ValueTask DisposeAsync()
 		{
 			if (_queue.Count == 0)
 				return;
-			await _flusher.BeginAsync(_receiver.GetCancellationToken());
+			await _flusher.BeginAsync(_appender.GetCancellationToken());
 			while (_queue.TryDequeue(out var entry))
-				await _flusher.Add(entry, _receiver.GetCancellationToken());
-			await _flusher.EndAsync(_receiver.GetCancellationToken());
+				await _flusher.Add(entry, _appender.GetCancellationToken());
+			await _flusher.EndAsync(_appender.GetCancellationToken());
 		}
 	}
 }

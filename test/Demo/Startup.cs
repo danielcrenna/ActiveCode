@@ -1,4 +1,6 @@
 using ActiveStorage.Sqlite;
+using Demo.Controllers;
+using Demo.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +17,11 @@ namespace Demo
         public void ConfigureServices(IServiceCollection services)
         {
 	        services.AddSqliteStorage("sqlite", "Data Source=log.db");
-	        services.AddControllersWithViews();
+	        services.AddControllersWithViews(o =>
+	        {
+		        o.Filters.Add(new CancellationTokenFilter());
+		        o.Filters.Add(new RequestIdFilter());
+	        });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

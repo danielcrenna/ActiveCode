@@ -5,11 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ActiveStorage.Sqlite" Version="1.0.0-pre-7" />
+    <ProjectReference Include="..\..\..\ActiveStorage\src\ActiveStorage.Sqlite\ActiveStorage.Sqlite.csproj" />
+    <ProjectReference Include="..\..\src\ActiveLogging\ActiveLogging.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ActiveLogging\ActiveLogging.csproj" />
+    <Folder Include="Pages\" />
   </ItemGroup>
 
 </Project>

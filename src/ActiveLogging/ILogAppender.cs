@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace ActiveLogging
 {
-	public interface ILogReceiver
+	public interface ILogAppender
 	{
 		void Append(LogEntry logEntry, in CancellationToken cancellationToken = default);
 		CancellationToken GetCancellationToken();

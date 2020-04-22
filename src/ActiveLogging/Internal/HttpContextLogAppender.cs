@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Http;
 
 namespace ActiveLogging.Internal
 {
-	internal sealed class HttpContextLogReceiver : ILogReceiver
+	internal sealed class HttpContextLogAppender : ILogAppender
 	{
 		private const string QueueContextKey = "HttpContextLogReceiver_Queue";
 
 		private readonly IHttpContextAccessor _accessor;
 		private readonly IAsyncLogFlusher _flusher;
 
-		public HttpContextLogReceiver(IHttpContextAccessor accessor, IAsyncLogFlusher flusher)
+		public HttpContextLogAppender(IHttpContextAccessor accessor, IAsyncLogFlusher flusher)
 		{
 			_accessor = accessor;
 			_flusher = flusher;

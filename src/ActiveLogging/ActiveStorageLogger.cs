@@ -14,13 +14,13 @@ namespace ActiveLogging
 	{
 		private readonly string _categoryName;
 		private readonly ActiveStorageLoggerProvider _provider;
-		private readonly ILogReceiver _receiver;
+		private readonly ILogAppender _appender;
 		private readonly IOptionsMonitor<LoggerFilterOptions> _options;
 
-		public ActiveStorageLogger(string categoryName, ActiveStorageLoggerProvider provider, ILogReceiver receiver, IOptionsMonitor<LoggerFilterOptions> options)
+		public ActiveStorageLogger(string categoryName, ActiveStorageLoggerProvider provider, ILogAppender appender, IOptionsMonitor<LoggerFilterOptions> options)
 		{
 			_categoryName = categoryName;
-			_receiver = receiver;
+			_appender = appender;
 			_provider = provider;
 			_options = options;
 		}
@@ -33,7 +33,7 @@ namespace ActiveLogging
 			if (!IsEnabled(logLevel))
 				return;
 
-			var cancellationToken = _receiver.GetCancellationToken();
+			var cancellationToken = _appender.GetCancellationToken();
 
 			var entry = new LogEntry
 			{
@@ -45,7 +45,7 @@ namespace ActiveLogging
 				Message = formatter(state, exception)
 			};
 
-			_receiver.Append(entry, cancellationToken);
+			_appender.Append(entry, cancellationToken);
 		}
 
 		private static string SerializeException(Exception exception)

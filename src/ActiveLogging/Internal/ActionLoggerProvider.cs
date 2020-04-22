@@ -4,9 +4,9 @@
 using System;
 using Microsoft.Extensions.Logging;
 
-namespace ActiveLogging
+namespace ActiveLogging.Internal
 {
-	public sealed class ActionLoggerProvider : ILoggerProvider
+	internal sealed class ActionLoggerProvider : ILoggerProvider
 	{
 		private readonly Action<string> _writeLine;
 
