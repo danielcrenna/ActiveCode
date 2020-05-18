@@ -4,7 +4,7 @@
   <Import Project="$(ProjectDir)..\..\build\build.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp5.0</TargetFramework>
     <Configurations>Debug;Release;Package</Configurations>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>8</LangVersion>
@@ -13,7 +13,7 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="ActiveStorage" Version="1.0.0-pre-3" />
-    <PackageReference Include="System.Text.Json" Version="4.7.1" />
+    <PackageReference Include="System.Text.Json" Version="5.0.0-preview.3.20214.6" />
     <PackageReference Include="TypeKitchen.Serialization" Version="1.2.12" />
     <PackageReference Include="WebStrings" Version="1.1.0" />
   </ItemGroup>

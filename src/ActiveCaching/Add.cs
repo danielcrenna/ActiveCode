@@ -21,6 +21,7 @@ namespace ActiveCaching
 			if (configureAction != null)
 				services.Configure(configureAction);
 
+			services.TryAdd(ServiceDescriptor.Singleton<Func<DateTimeOffset>>(r => () => DateTimeOffset.Now));
 			services.TryAdd(ServiceDescriptor.Singleton<IMemoryCache, MemoryCache>());
 			services.TryAdd(ServiceDescriptor.Singleton<ICache, InProcessCache>());
 
@@ -35,6 +36,7 @@ namespace ActiveCaching
 			if (configureAction != null)
 				services.Configure(configureAction);
 
+			services.TryAdd(ServiceDescriptor.Singleton<Func<DateTimeOffset>>(r => () => DateTimeOffset.Now));
 			services.TryAdd(ServiceDescriptor.Singleton<IDistributedCache, MemoryDistributedCache>());
 			services.TryAdd(ServiceDescriptor.Singleton<ICache, DistributedCache>());
 
