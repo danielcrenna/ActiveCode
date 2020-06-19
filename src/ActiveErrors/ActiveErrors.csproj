@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="$(ProjectDir)..\..\build\build.props" />
+
+  <PropertyGroup>    
+    <Description>Clean and consistent error handling in ASP.NET Core MVC.</Description>
+    <Copyright>Copyright © Daniel Crenna &amp; Contributors. All rights reserved.</Copyright>
+    <PackageIconUrl>https://raw.githubusercontent.com/danielcrenna/ActiveCode/master/assets/ActiveErrors.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/danielcrenna/ActiveCode</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/danielcrenna/ActiveCode</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dynamic errors exceptions</PackageTags>
+    <Version>1.0.5</Version>
+    <PackageReleaseNotes>Update dependencies.</PackageReleaseNotes>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <TargetFramework>netcoreapp5.0</TargetFramework>
+    <Configurations>Debug;Release;Package</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TypeKitchen" Version="1.2.12" />
+    <PackageReference Include="WebStrings" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ErrorStrings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ErrorStrings.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="ErrorStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

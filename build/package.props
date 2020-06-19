@@ -3,6 +3,7 @@
   <PropertyGroup>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Authors>Daniel Crenna &amp; Contributors</Authors>
+<<<<<<< HEAD
     <Description>Simple and consistent caching for .NET Core.</Description>
     <Copyright>Copyright © Daniel Crenna &amp; Contributors. All rights reserved.</Copyright>
     <PackageIconUrl>https://raw.githubusercontent.com/danielcrenna/ActiveCaching/master/assets/logo.png</PackageIconUrl>
@@ -13,6 +14,18 @@
     <PackageTags>dynamic caching</PackageTags>
     <Version>1.0.5</Version>
     <PackageReleaseNotes>Add cache key value store.</PackageReleaseNotes>
+=======
+    <Description>Clean and consistent error handling in ASP.NET Core MVC.</Description>
+    <Copyright>Copyright © Daniel Crenna &amp; Contributors. All rights reserved.</Copyright>
+    <PackageIconUrl>https://raw.githubusercontent.com/danielcrenna/ActiveErrors/master/assets/logo.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/danielcrenna/ActiveErrors</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/danielcrenna/ActiveErrors</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dynamic errors exceptions</PackageTags>
+    <Version>1.0.5</Version>
+    <PackageReleaseNotes>Update dependencies.</PackageReleaseNotes>
+>>>>>>> errors/master
   </PropertyGroup>
 
 </Project>

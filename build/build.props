@@ -19,5 +19,4 @@
       Command="dotnet nuget push &quot;$(TargetDir)..\$(PackageId).$(PackageVersion).nupkg&quot; -s https://www.nuget.org/api/v2/package" />
   </Target>
 
-
 </Project>

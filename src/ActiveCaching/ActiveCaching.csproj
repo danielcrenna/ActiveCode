@@ -1,7 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="$(ProjectDir)..\..\build\package.props" />
   <Import Project="$(ProjectDir)..\..\build\build.props" />
+  
+  <PropertyGroup>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Authors>Daniel Crenna &amp; Contributors</Authors>
+    <Description>Simple and consistent caching for .NET Core.</Description>
+    <Copyright>Copyright © Daniel Crenna &amp; Contributors. All rights reserved.</Copyright>
+    <PackageIconUrl>https://raw.githubusercontent.com/danielcrenna/ActiveCode/master/assets/ActiveCaching.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/danielcrenna/ActiveCode</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/danielcrenna/ActiveCode</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dynamic caching</PackageTags>
+    <Version>1.0.5</Version>
+    <PackageReleaseNotes>Add cache key value store.</PackageReleaseNotes>
+  </PropertyGroup>
 
   <PropertyGroup>
     <TargetFramework>netcoreapp5.0</TargetFramework>
