@@ -5,6 +5,7 @@
     <Authors>Daniel Crenna &amp; Contributors</Authors>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Description>Simple and consistent caching for .NET Core.</Description>
     <Copyright>Copyright © Daniel Crenna &amp; Contributors. All rights reserved.</Copyright>
     <PackageIconUrl>https://raw.githubusercontent.com/danielcrenna/ActiveCaching/master/assets/logo.png</PackageIconUrl>
@@ -39,6 +40,18 @@
     <Version>1.0.3</Version>
     <PackageReleaseNotes>Update dependencies.</PackageReleaseNotes>
 >>>>>>> connection/master
+=======
+    <Description>Simple safe logger and sinks.</Description>
+    <Copyright>Copyright © Daniel Crenna &amp; Contributors. All rights reserved.</Copyright>
+    <PackageIconUrl>https://raw.githubusercontent.com/danielcrenna/ActiveLogging/master/assets/logo.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/danielcrenna/ActiveLogging</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/danielcrenna/ActiveLogging</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dynamic logging</PackageTags>
+    <Version>1.0.3</Version>
+    <PackageReleaseNotes>Update dependencies.</PackageReleaseNotes>
+>>>>>>> logging/master
   </PropertyGroup>
 
 </Project>

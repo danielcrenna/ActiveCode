@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ActiveStorage\src\ActiveStorage.Sqlite\ActiveStorage.Sqlite.csproj" />
+    <ProjectReference Include="..\..\src\ActiveLogging\ActiveLogging.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\" />
+  </ItemGroup>
+
+</Project>
