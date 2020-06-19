@@ -5,12 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\**" />
+    <Content Remove="Pages\**" />
+    <EmbeddedResource Remove="Pages\**" />
+    <None Remove="Pages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\ActiveStorage\src\ActiveStorage.Sqlite\ActiveStorage.Sqlite.csproj" />
+    <ProjectReference Include="..\..\src\ActiveErrors\ActiveErrors.csproj" />
     <ProjectReference Include="..\..\src\ActiveLogging\ActiveLogging.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\" />
+    <ProjectReference Include="..\..\src\ActiveResolver.Api\ActiveResolver.Api.csproj" />
   </ItemGroup>
 
 </Project>

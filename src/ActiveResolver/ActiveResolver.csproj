@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+  <Import Project="$(ProjectDir)..\..\build\build.props" />
+  
+  <PropertyGroup>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Authors>Daniel Crenna &amp; Contributors</Authors>
+    <Description>Simple but powerful dependency management in .NET Core.</Description>
+    <Copyright>Copyright © Daniel Crenna &amp; Contributors. All rights reserved.</Copyright>
+    <PackageIconUrl>https://raw.githubusercontent.com/danielcrenna/ActiveCode/master/assets/ActiveResolver.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/danielcrenna/ActiveCode</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/danielcrenna/ActiveCode</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dynamic dependency injection DI IoC</PackageTags>
+    <Version>1.0.7</Version>
+    <PackageReleaseNotes>Add Graphviz configure hook.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release;Package</Configurations>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="TypeKitchen" Version="1.2.12" />
+    <PackageReference Include="TypeKitchen.Creation" Version="1.2.12" />
+  </ItemGroup>
+
+</Project>
