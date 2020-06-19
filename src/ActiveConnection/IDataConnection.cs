@@ -6,9 +6,7 @@ using System.Data;
 namespace ActiveConnection
 {
 	// ReSharper disable once UnusedTypeParameter
-	public interface IDataConnection<TScope> : IDataConnection
-	{
-	}
+	public interface IDataConnection<TScope> : IDataConnection { }
 
 	public interface IDataConnection
 	{
